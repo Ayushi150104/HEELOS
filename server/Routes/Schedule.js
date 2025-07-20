@@ -1,24 +1,65 @@
 const express = require('express');
 const router = express.Router();
 const Schedule = require('../Models/TaskSchema');
-const User = require('../Models/UserSchema')
+const authMiddleware = require('../MiddleWare/authMiddleWare');
 
-router.get('/', async(res, req) => {
-    try {
-        const schedules = await Schedule.find();
-        res.json(schedules)
-    } catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-} )
+// GET all schedules with populated createdBy name (no filtering)
+router.get('/', async (req, res, next) => {
+  try {
+    const schedules = await Schedule.find().populate('createdBy', 'name');
+    res.json(schedules);
+  } catch (error) {
+    next(error);
+  }
+});
 
-router.get('/:id', async(req, res)=>{
-    try {
-        const Schedule = await Schedule.findById(req.params.id);
-        if(!Schedule) return res.status(404).json({ message: 'Schedule Not Found' });
-        res.json(Schedule);
-    } catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-})
+// IMPORTANT: Place this BEFORE the '/:id' route
+// GET schedules created by logged-in user only
+router.get('/my', authMiddleware, async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const schedules = await Schedule.find({ createdBy: userId }).populate('createdBy', 'name');
+    res.json(schedules);
+  } catch (error) {
+    next(error);
+  }
+});
 
+// GET single schedule by ID with populated createdBy name
+router.get('/:id', async (req, res, next) => {
+  try {
+    const schedule = await Schedule.findById(req.params.id).populate('createdBy', 'name');
+    if (!schedule) return res.status(404).json({ message: 'Schedule Not Found' });
+    res.json(schedule);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// POST create a new schedule — requires auth, uses logged-in user
+router.post('/', authMiddleware, async (req, res, next) => {
+  const { scheduleName, color, type, tasks } = req.body;
+
+  if (!scheduleName) {
+    return res.status(400).json({ message: 'scheduleName is required' });
+  }
+
+  try {
+    const schedule = new Schedule({
+      scheduleName,
+      createdBy: req.user.id,  // Use authenticated user's ID
+      color,
+      type,
+      tasks: tasks || []
+    });
+
+    const savedSchedule = await schedule.save();
+    const populated = await savedSchedule.populate('createdBy', 'name');
+
+    res.status(201).json(populated);
+  } catch (error) {
+    next(error);
+  }
+});
+
+module.exports = router;
