@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Tooltip from '../components/toolTip';
 import Tabletip from '../components/TableTip';
 import { IoShapesOutline } from 'react-icons/io5';
@@ -7,6 +7,8 @@ import { GrTasks } from 'react-icons/gr';
 import {  schedules } from '../assets/Data';
 import FreeDragBoard from '../components/FreeDragBoard';
 import FreeDragBoardMobile from '../components/FreeDragBoardMobile';
+import axiosInstance from '../api/axiosInstance'; // make sure this includes token logic
+
 
 type BaseItem = {
   key: string;
@@ -31,9 +33,29 @@ type ManageTasksProps = {
   darkMode: boolean;
 };
 
+interface UserData {
+  username: string;
+  plan: string;
+  schedules?: { 
+    scheduleName?: string,
+    color?: string,
+    tasks?: Task[] 
+  }[]; // added schedules since you use it
+}
+
 const ManageTasks: React.FC<ManageTasksProps> = ({ darkMode }) => {
   const [items, setItems] = useState<DraggableItem[]>([]);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    axiosInstance.get('/tasks/my')
+      .then(res => setUserData(res.data))
+      .catch(err => console.error('Failed to load user data:', err));
+  }, []);
+
+  // Flatten all tasks from schedules
+  const allTasks = userData?.schedules;
 
   const toggleOpen = (idx: number) => {
     setOpenIndex((prev) => (prev === idx ? null : idx));
@@ -82,7 +104,7 @@ const ManageTasks: React.FC<ManageTasksProps> = ({ darkMode }) => {
     <>
     {/*desktop view*/}
     <div
-      className=" h-[91.5vh] mt-12 w-[81.5vw] overflow-hidden z-[50] relative hidden md:flex"
+      className=" h-[100.5vh] mt-11  w-[81.5vw] overflow-hidden z-[50] relative hidden md:flex"
       style={{
         backgroundColor: darkMode ? '#1f2123' : '#f0f0f0',
         backgroundImage: darkMode
@@ -136,7 +158,7 @@ const ManageTasks: React.FC<ManageTasksProps> = ({ darkMode }) => {
         </div>
 
         <div className="flex md:flex-col gap-4 mt-2">
-          {schedules.map((sc, idx) => (
+          {allTasks?.map((sc, idx) => (
             <div
               key={idx}
               onClick={(e) => {
@@ -181,7 +203,7 @@ const ManageTasks: React.FC<ManageTasksProps> = ({ darkMode }) => {
 
       {/* Main Area */}
       <div
-        className="p-6 h-full pl-[7em] overflow-auto fixed -left-2"
+        className="p-6 pb-0 h-full pl-[7em] overflow-auto fixed -left-2"
         style={{ marginLeft: '23em', minWidth: 'calc(100% - 23em)' }}
       >
         <h1
@@ -218,7 +240,7 @@ const ManageTasks: React.FC<ManageTasksProps> = ({ darkMode }) => {
     </div>
     {/*mobile view*/}
 <div
-  className="h-screen w-full relative md:hidden flex flex-col"
+  className="h-screen w-[calc(125%-2.5rem)] relative md:hidden flex flex-col -left-4"
   style={{
     backgroundColor: darkMode ? '#1f2123' : '#f0f0f0',
     backgroundImage: darkMode
@@ -267,7 +289,7 @@ const ManageTasks: React.FC<ManageTasksProps> = ({ darkMode }) => {
 
   {/* Fixed Bottom Sidebar */}
       <div
-        className={`fixed rounded-xl h-max p-5 z-[90] shadow-xl  md:flex-col gap-6 w-max md:left-[23em] md:not-only:top-[2.5em] items-center mt-15 flex-wrap md:hidden flex  top-[30em] flex-col-reverse ${
+        className={`fixed rounded-xl h-max p-5 z-[40] shadow-xl  md:flex-col gap-6 w-max md:left-[23em] md:not-only:top-[2.5em] items-center mt-15 flex-wrap md:hidden flex  top-[30em] flex-col-reverse ${
           darkMode
             ? 'bg-gradient-to-br from-[#151515] to-[#1f2123] text-white'
             : 'bg-gradient-to-br from-[#f5f5fb] to-[#e9eafb] text-[#232946]'
@@ -295,9 +317,7 @@ const ManageTasks: React.FC<ManageTasksProps> = ({ darkMode }) => {
               key={idx}
               className={`p-3 rounded-xl w-full flex justify-center cursor-pointer ${
     darkMode ? 'bg-white/5' : 'bg-black/5'
-  } ${
-    cards.text === 'Notes' ? 'bg-purple-500' : cards.text === 'Tasks' ? 'bg-red-500' : ''
-  }`}
+  } `}
               onClick={() => {
                 if (cards.text === 'Notes') {
                   addEditableCard('', 'bg-purple-600 h-[201px] w-[207px] rounded-[0px 0px 39px/34% 0px]');

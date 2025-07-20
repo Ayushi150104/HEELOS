@@ -528,7 +528,7 @@ function FreeDragBoardMobile<T>({
                   transform: "translateY(-50%)",
                   cursor: "pointer",
                   fontSize: 28,
-                  color: darkMode ? (showPlugMap[item.key] ? "red" : "gray") : (showPlugMap[item.key] ? "yellow" : "white"),
+                  color: darkMode ? (showPlugMap[item.key] ? "red" : "gray") : (showPlugMap[item.key] ? "red" : "gray"),
                   transition: "color 0.2s",
                   userSelect: "none",
                 }}

@@ -4,26 +4,46 @@ import {
   MdOutlineKeyboardArrowUp,
   MdOutlineKeyboardDoubleArrowDown,
 } from "react-icons/md";
-import { schedules } from "../assets/Data";
 import TaskDetails from "../pages/TaskDetails";
+
+type SingleSchedule = {
+  scheduleName: string;
+  color: string;
+  createdBy: string;
+  tasks: {
+    name: string;
+    color: string;
+    difficulty: string;
+    endBy: string;
+    priority: string;
+    status: string;
+    tags: string[];
+    description: string;
+    createdAt: string;
+    activityLog: {
+      type: string;
+      time: string;
+    }[];
+    subtasks: {
+      name: string;
+      des: string;
+      color: string;
+      date: string;
+      completion: number;
+    }[];
+  }[];
+};
 
 type TaskTableProps = {
   darkMode: boolean;
+  schedule: SingleSchedule; // only one schedule now
 };
 
-const TaskTable: React.FC<TaskTableProps> = ({ darkMode }) => {
-  const [openedScheduleIdx, setOpenedScheduleIdx] = useState<number | null>(null);
+const TaskTable: React.FC<TaskTableProps> = ({ darkMode, schedule }) => {
   const [selectedTaskIdx, setSelectedTaskIdx] = useState<number | null>(null);
 
-  const handleRowClick = (scheduleIdx: number, taskIdx: number) => {
-    // Toggle task detail open/close on same click
-    if (openedScheduleIdx === scheduleIdx && selectedTaskIdx === taskIdx) {
-      setOpenedScheduleIdx(null);
-      setSelectedTaskIdx(null);
-    } else {
-      setOpenedScheduleIdx(scheduleIdx);
-      setSelectedTaskIdx(taskIdx);
-    }
+  const handleRowClick = (taskIdx: number) => {
+    setSelectedTaskIdx(prev => (prev === taskIdx ? null : taskIdx));
   };
 
   return (
@@ -50,67 +70,62 @@ const TaskTable: React.FC<TaskTableProps> = ({ darkMode }) => {
         </thead>
 
         <tbody>
-          {schedules.map((schedule, scheduleIdx) =>
-            schedule.tasks.map((task, taskIdx) => (
-              <React.Fragment key={`${scheduleIdx}-${taskIdx}`}>
-                <tr
-                  className={`transition-all border-b text-left cursor-pointer ${
-                    darkMode
-                      ? "border-gray-700 hover:bg-zinc-700"
-                      : "border-gray-200 hover:bg-gray-100"
-                  }`}
-                  onClick={() => handleRowClick(scheduleIdx, taskIdx)}
-                >
-                  <td className="py-3 px-4 flex items-center gap-2 font-medium">
-                    {task.priority === "high" && (
-                      <MdOutlineKeyboardDoubleArrowUp className="text-red-500 text-lg" />
-                    )}
-                    {task.priority === "medium" && (
-                      <MdOutlineKeyboardArrowUp className="text-yellow-400 text-lg" />
-                    )}
-                    {task.priority === "low" && (
-                      <MdOutlineKeyboardDoubleArrowDown className="text-green-400 text-lg" />
-                    )}
-                    <span
-                      className={`capitalize ${
-                        task.priority === "high"
-                          ? "text-red-500"
-                          : task.priority === "medium"
-                          ? "text-yellow-400"
-                          : "text-green-400"
-                      }`}
-                    >
-                      {task.priority}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4">{task.name}</td>
-                  <td className="py-3 px-4">
-                    {new Date(task.endBy).toLocaleDateString("en-IN", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
+          {schedule.tasks.map((task, taskIdx) => (
+            <React.Fragment key={taskIdx}>
+              <tr
+                className={`transition-all border-b text-left cursor-pointer ${
+                  darkMode
+                    ? "border-gray-700 hover:bg-zinc-700"
+                    : "border-gray-200 hover:bg-gray-100"
+                }`}
+                onClick={() => handleRowClick(taskIdx)}
+              >
+                <td className="py-3 px-4 flex items-center gap-2 font-medium">
+                  {task.priority === "high" && (
+                    <MdOutlineKeyboardDoubleArrowUp className="text-red-500 text-lg" />
+                  )}
+                  {task.priority === "medium" && (
+                    <MdOutlineKeyboardArrowUp className="text-yellow-400 text-lg" />
+                  )}
+                  {task.priority === "low" && (
+                    <MdOutlineKeyboardDoubleArrowDown className="text-green-400 text-lg" />
+                  )}
+                  <span
+                    className={`capitalize ${
+                      task.priority === "high"
+                        ? "text-red-500"
+                        : task.priority === "medium"
+                        ? "text-yellow-400"
+                        : "text-green-400"
+                    }`}
+                  >
+                    {task.priority}
+                  </span>
+                </td>
+                <td className="py-3 px-4">{task.name}</td>
+                <td className="py-3 px-4">
+                  {new Date(task.endBy).toLocaleDateString("en-IN", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </td>
+              </tr>
+
+              {selectedTaskIdx === taskIdx && (
+                <tr>
+                  <td colSpan={3} className="p-4 bg-gray-100 dark:bg-zinc-900">
+                    <TaskDetails
+                      darkMode={darkMode}
+                      task={task}
+                      scheduleName={schedule.scheduleName}
+                      close={() => setSelectedTaskIdx(null)}
+                    />
                   </td>
                 </tr>
-
-                {openedScheduleIdx === scheduleIdx && selectedTaskIdx === taskIdx && (
-                  <tr>
-                    <td colSpan={3} className="p-4 bg-gray-100 dark:bg-zinc-900">
-                      <TaskDetails
-                        darkMode={darkMode}
-                        task={task}
-                        scheduleName={schedule.scheduleName}
-                        close={() => {
-                          setOpenedScheduleIdx(null);
-                          setSelectedTaskIdx(null);
-                        }}
-                      />
-                    </td>
-                  </tr>
-                )}
-              </React.Fragment>
-            ))
-          )}
+              )}
+            </React.Fragment>
+          ))}
         </tbody>
       </table>
     </div>

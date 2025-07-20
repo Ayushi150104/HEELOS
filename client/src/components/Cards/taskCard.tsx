@@ -14,7 +14,7 @@ const TaskCard: React.FC<taskCardProp> = ({ imp, name, des, tags, darkMode, cn }
   let ic = '';
   if (imp === 'high') {
     ic = 'bg-red-500';
-  } else if (imp === 'med') {
+  } else if (imp === 'medium') {
     ic = 'bg-yellow-500';
   } else if (imp === 'low') {
     ic = 'bg-green-500';
@@ -36,7 +36,7 @@ const TaskCard: React.FC<taskCardProp> = ({ imp, name, des, tags, darkMode, cn }
 
         {/* Task Details */}
         <div className="flex flex-col flex-1 min-w-fit ">
-          <div className="font-semibold text-lg break-words relative -left-12 -top-0.5">{name}</div>
+          <div className="font-semibold text-lg break-words relative   -top-0.5">{name}</div>
           <div className="text-sm break-words relative -left-7 text-left ">{des}</div>
         </div>
       </div>

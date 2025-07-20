@@ -1,24 +1,23 @@
 import clsx from 'clsx';
 import React from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { FaDog } from 'react-icons/fa';
-import { FaThreads } from 'react-icons/fa6';
 
 type ImpCardsProps = {
-    title: string;
-    className: string;
+  title: string;
+  className: string;
+  des: string;
+  icon: React.ReactNode;
+  darkMode: boolean;
+  padding?: string | "py-10 px-8 p-4";
+  color: string;
+  subtasks: {
+    name: string,
     des: string;
-    icon: React.ReactNode;
-    darkMode: boolean;
-    padding?: string | "py-10 px-8 p-4";
     color: string;
-    subtasks: {
-        name: string,
-        des: string;
-        color: string;
-        date: string;
-        completion: number;
-    }[]
+    date: string;
+    completion: number;
+  }[];
+  onClick?: () => void;  // Added onClick prop
 }
 
 const getInitials = (name: string) => {
@@ -28,20 +27,35 @@ const getInitials = (name: string) => {
     .join('');
 };
 
-const ImpCards: React.FC<ImpCardsProps> = ({ title, des, icon, subtasks, color, padding, className }) => {
+const ImpCards: React.FC<ImpCardsProps> = ({
+  title,
+  des,
+  icon,
+  subtasks,
+  color,
+  padding,
+  className,
+  onClick
+}) => {
   return (
-    <div className={clsx("grid grid-rows-3 gap-4 rounded-lg text-white", color, padding, className)}>
-      
+    <div
+      onClick={onClick} // attach onClick handler here
+      className={clsx(
+        "grid grid-rows-3 gap-4 rounded-lg text-white cursor-pointer", // added cursor-pointer
+        color,
+        padding,
+        className
+      )}
+    >
       {/* Title */}
       <div className="order-1 text-left font-extrabold text-2xl w-[90%] flex-wrap">{title}</div>
-      
+
       {/* Description */}
       <div className="order-2 text-left">{des}</div>
-      
+
       {/* Icon and Subtasks */}
       <div className="order-3 flex items-center gap-4 flex-wrap">
-        
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 flex-wrap w-[8em]">
           {subtasks.map((task, idx) => (
             <div
               key={idx}
@@ -55,10 +69,8 @@ const ImpCards: React.FC<ImpCardsProps> = ({ title, des, icon, subtasks, color, 
         <div className="text-2xl h-auto w-auto p-3 bg-black/20 rounded-lg ml-auto">{icon}</div>
         <div><BsThreeDotsVertical /></div>
       </div>
-
     </div>
   );
 };
 
-
-export default ImpCards
+export default ImpCards;

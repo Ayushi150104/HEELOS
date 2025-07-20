@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { FiMoon, FiSun, FiSearch, FiHeart, FiMenu, FiX } from "react-icons/fi";
+import { FiMoon, FiSun, FiSearch, FiHeart, FiMenu, FiX, FiLogOut } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 interface NavbarProps {
   darkMode: boolean;
@@ -14,8 +14,19 @@ const links = [
   { name: "Contact", link: "/contact" },
 ];
 
+const hideLogoutOnPaths = ["/login", "/", "/about", "/contact"];
+
 const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Clear token
+    navigate("/login"); // Redirect to login page
+  };
+
+  const showLogout = !hideLogoutOnPaths.includes(location.pathname);
 
   return (
     <header
@@ -63,6 +74,19 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
               )}
             </NavLink>
           ))}
+
+          {/* Logout Button - show only if not on excluded pages */}
+          {showLogout && (
+            <button
+              onClick={handleLogout}
+              className="ml-4 flex items-center space-x-1 px-4 py-1.5 rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors"
+              aria-label="Logout"
+              type="button"
+            >
+              <FiLogOut />
+              <span className="hidden sm:inline">Logout</span>
+            </button>
+          )}
         </nav>
 
         {/* Icons & Hamburger */}
@@ -95,6 +119,18 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
           >
             {darkMode ? <FiSun /> : <FiMoon />}
           </button>
+
+          {/* Logout Button Mobile - show only if not on excluded pages */}
+          {showLogout && (
+            <button
+              onClick={handleLogout}
+              className="ml-2 p-2 rounded-full border border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-colors md:hidden"
+              aria-label="Logout"
+              type="button"
+            >
+              <FiLogOut size={20} />
+            </button>
+          )}
 
           {/* Mobile menu toggle */}
           <button

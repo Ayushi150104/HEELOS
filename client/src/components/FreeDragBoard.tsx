@@ -389,7 +389,7 @@ function FreeDragBoard<T>({
       ref={containerRef}
       tabIndex={0}
       onKeyDown={onKeyDown}
-      className={`relative overflow-visible bg-transparent rounded-md shadow-inner p-4 outline-none ${className}`}
+      className={`relative overflow-visible bg-transparent h-full rounded-md shadow-inner p-4 outline-none ${className}`}
       style={{ width, height, userSelect: "none", minHeight: 300 }}
     >
       <svg

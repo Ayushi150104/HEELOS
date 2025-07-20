@@ -17,9 +17,15 @@ router.get('/', async (req, res, next) => {
 // GET schedules created by logged-in user only
 router.get('/my', authMiddleware, async (req, res, next) => {
   try {
+    const userOB = req.user;
     const userId = req.user.id;
     const schedules = await Schedule.find({ createdBy: userId }).populate('createdBy', 'name');
-    res.json(schedules);
+    return res.json({
+      username: userOB.name,
+      plan: userOB.plan || 'Basic',
+      schedules
+    });
+     
   } catch (error) {
     next(error);
   }
