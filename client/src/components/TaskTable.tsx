@@ -4,10 +4,12 @@ import {
   MdOutlineKeyboardArrowUp,
   MdOutlineKeyboardDoubleArrowDown,
 } from "react-icons/md";
-import TaskDetails from "../pages/TaskDetails";
+import NewTaskDetails from "../pages/NewTaskDetails";
 
 type SingleSchedule = {
   scheduleName: string;
+  scheduleId: string;
+  taskId?: string; // Optional, used for specific task details
   color: string;
   createdBy: string;
   tasks: {
@@ -115,9 +117,10 @@ const TaskTable: React.FC<TaskTableProps> = ({ darkMode, schedule }) => {
               {selectedTaskIdx === taskIdx && (
                 <tr>
                   <td colSpan={3} className="p-4 bg-gray-100 dark:bg-zinc-900">
-                    <TaskDetails
+                    <NewTaskDetails
                       darkMode={darkMode}
                       task={task}
+                      scheduleId={schedule._id}
                       scheduleName={schedule.scheduleName}
                       close={() => setSelectedTaskIdx(null)}
                     />

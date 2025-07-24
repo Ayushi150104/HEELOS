@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FiMoon, FiSun, FiSearch, FiHeart, FiMenu, FiX, FiLogOut } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { toast } from "sonner";
 
 interface NavbarProps {
   darkMode: boolean;
@@ -23,6 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token"); // Clear token
+    toast.success("Logged out successfully")
     navigate("/login"); // Redirect to login page
   };
 

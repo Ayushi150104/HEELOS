@@ -46,6 +46,10 @@ const beforePositionClass = (darkMode: boolean) => {
     case "/":
     case "/about":
     case "/contact":
+      return `
+        before:content-['']
+        
+      `
     case "/login":
       return `
         before:content-[''] 
@@ -115,7 +119,7 @@ const beforePositionClass = (darkMode: boolean) => {
     // Wrapper div for background & text colors
     //  using Tailwind dark classes
     <>
-    <Toaster position="top-right" />
+    <Toaster position="bottom-right" richColors />
     <div
   className={`relative min-h-screen transition-colors duration-500 shadow-none
     before:content-[''] 

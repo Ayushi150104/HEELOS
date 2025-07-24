@@ -49,7 +49,7 @@ const TabTable: React.FC<TabTableProp> = ({ darkMode, arr }) => {
         {arr.map((card, idx) => (
           <div
             key={idx}
-            className={`min-w-[20em] md:min-w-[23em] p-5 rounded-lg shadow-md border ${
+            className={`min-w-[20em] md:min-w-[23em] max-h-[25em] p-5 rounded-lg shadow-md border ${
               darkMode
                 ? 'bg-zinc-800 border-gray-700 text-white'
                 : 'bg-white border-gray-200 text-black'
@@ -123,7 +123,7 @@ const TabTable: React.FC<TabTableProp> = ({ darkMode, arr }) => {
 
             {/* Subtasks */}
             {card.subtasks?.length > 0 && (
-              <div className="mt-4 flex flex-col gap-3">
+              <div className="mt-4 flex flex-col gap-3 max-h-[12em] overflow-y-auto">
                 {card.subtasks.map((st, sIdx) => (
                   <div
                     key={sIdx}

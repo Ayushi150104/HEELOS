@@ -1,9 +1,13 @@
 import clsx from 'clsx';
 import React from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { HiTable, HiTrash } from 'react-icons/hi';
+import { toast } from 'sonner';
+import api from '../../api/axiosInstance';
 
 type ImpCardsProps = {
   title: string;
+  scheduleId: string;
   className: string;
   des: string;
   icon: React.ReactNode;
@@ -32,20 +36,37 @@ const ImpCards: React.FC<ImpCardsProps> = ({
   des,
   icon,
   subtasks,
+  scheduleId,
   color,
   padding,
   className,
-  onClick
+  onClick,
+  
 }) => {
+  const deleteSchedule = async() => {
+    // Implement delete functionality here
+    try {
+      const res = await api.delete(
+        `/tasks/my/${scheduleId}/delete`,
+      )
+
+      const updated  = res.data;
+      console.log(updated)
+      
+      toast.success("Deleted schedule successfully please refresh teh page to see updates this problem will be solved shortly ");
+    } catch (error) {
+      toast.error("Error deleting schedule:");
+    }
+  };
   return (
     <div
       onClick={onClick} // attach onClick handler here
       className={clsx(
         "grid grid-rows-3 gap-4 rounded-lg text-white cursor-pointer", // added cursor-pointer
-        color,
         padding,
         className
       )}
+      style={{ background: color}}
     >
       {/* Title */}
       <div className="order-1 text-left font-extrabold text-2xl w-[90%] flex-wrap">{title}</div>
@@ -67,7 +88,7 @@ const ImpCards: React.FC<ImpCardsProps> = ({
           ))}
         </div>
         <div className="text-2xl h-auto w-auto p-3 bg-black/20 rounded-lg ml-auto">{icon}</div>
-        <div><BsThreeDotsVertical /></div>
+        <div onClick={deleteSchedule}><HiTrash /></div>
       </div>
     </div>
   );

@@ -55,6 +55,12 @@ const ScheduleSchema = new mongoose.Schema({
   color: String,
   type: String,
   tasks: [TaskSchema]
-}, { timestamps: true }); // ← adds createdAt, updatedAt
+}, { timestamps: true });
 
-module.exports = mongoose.model('Schedule', ScheduleSchema);
+// ✅ Export models properly
+const Schedule = mongoose.model('Schedule', ScheduleSchema);
+const Task = mongoose.model('Task', TaskSchema);
+const SubTask = mongoose.model('SubTask', SubtaskSchema);
+const TimeLine = mongoose.model('TimeLine', ActivitySchema);
+
+module.exports = { Schedule, Task, TimeLine, SubTask };

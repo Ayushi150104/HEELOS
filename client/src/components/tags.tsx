@@ -1,31 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
 type TagsProps = {
   text: string;
   darkMode: boolean;
-  initiallySelected?: boolean;
-  onSelect?: (text: string, selected: boolean) => void;
+  selected: boolean; // ✅ Required now
+  onClick: (text: string) => void;
+  onClicked: () => void;
 };
 
-const Tags: React.FC<TagsProps> = ({ text, darkMode, initiallySelected = false, onSelect }) => {
-  const [selected, setSelected] = useState(initiallySelected);
-
-  const toggleSelect = () => {
-    const newState = !selected;
-    setSelected(newState);
-    onSelect?.(text, newState);
-  };
-
+const Tags: React.FC<TagsProps> = ({ text, darkMode, selected, onClick, onClicked }) => {
   return (
     <div
-      onClick={toggleSelect}
+      onClick={() => onClick(text)} // ✅ Just call parent
       role="button"
+      onDoubleClick={onClicked} // ✅ Call onClicked prop
       tabIndex={0}
-      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') toggleSelect(); }}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onClick(text); }}
       className={clsx(
         'inline-block select-none rounded-lg border font-medium transition duration-300 ease-in-out cursor-pointer px-4 py-2 text-sm',
-        'focus:outline-none focus:ring-offset-0 ',
+        'focus:outline-none focus:ring-offset-0',
         {
           // Dark mode
           'bg-zinc-800 text-white border-zinc-700 hover:bg-blue-800 hover:shadow-lg':
@@ -45,5 +39,6 @@ const Tags: React.FC<TagsProps> = ({ text, darkMode, initiallySelected = false, 
     </div>
   );
 };
+
 
 export default Tags;
