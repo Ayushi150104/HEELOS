@@ -8,11 +8,11 @@ type Task = {
 
 type TabletipProps = {
   darkMode: boolean;
-  tasks: Task[];
+  tasks?: Task[];
   className?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   open?: boolean;
-  title: string;
+  title?: string;
   selected: (task: Task) => void; // ✅ Accepts selected task
 };
 
@@ -50,7 +50,7 @@ const Tabletip: React.FC<TabletipProps> = ({
           </h4>
           <hr className="text-gray-300/50 mb-4" />
           <div className="flex flex-col gap-4 text-left">
-            {tasks.map((card, idx) => (
+            {tasks?.map((card, idx) => (
               <div
                 key={idx}
                 onClick={() => selected(card)} // ✅ When clicked, send to parent

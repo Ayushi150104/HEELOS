@@ -13,7 +13,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: ["https://mern-task-manager-app.netlify.app", "http://localhost:3000", "http://localhost:3001"],
+    origin: [process.env.CLIENT_URL, "http://localhost:3000", "http://localhost:3001"],
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     credentials: true,
   })

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaArrowCircleUp, FaArrowDown, FaArrowUp, FaCheckCircle, FaClock, FaExclamationCircle, FaInstagram, FaMinusCircle, FaPinterest, FaTwitter } from 'react-icons/fa';
+import { FaArrowCircleUp, FaArrowDown, FaCheckCircle, FaClock, FaExclamationCircle, FaInstagram, FaMinusCircle, FaPinterest, FaTwitter } from 'react-icons/fa';
 import Station from '../components/Station';
-import { tasksDemo, schedules } from '../assets/Data';
-import TaskCard from '../components/Cards/taskCard';
+import { tasksDemo } from '../assets/Data';
 import { motion } from 'framer-motion';
 
 type HomeProps = {
@@ -44,8 +43,6 @@ const Home: React.FC<HomeProps> = ({ darkMode }) => {
   const selectedDate = new Date(baseDate);
   selectedDate.setDate(baseDate.getDate() + offset);
 
-  const formatDateKey = (date: Date) => date.toISOString().split('T')[0]; // yyyy-mm-dd
-  const dateKey = formatDateKey(selectedDate);
 
   // Filter tasks for the selected date
 

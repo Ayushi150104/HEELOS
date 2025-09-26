@@ -4,7 +4,6 @@ import Tabletip from '../components/TableTip';
 import { IoShapesOutline } from 'react-icons/io5';
 import { FaNoteSticky } from 'react-icons/fa6';
 import { GrTasks } from 'react-icons/gr';
-import {  schedules } from '../assets/Data';
 import FreeDragBoard from '../components/FreeDragBoard';
 import FreeDragBoardMobile from '../components/FreeDragBoardMobile';
 import axiosInstance from '../api/axiosInstance'; // make sure this includes token logic
@@ -36,7 +35,7 @@ type ManageTasksProps = {
 interface UserData {
   username: string;
   plan: string;
-  schedules?: { 
+  schedules: { 
     scheduleName?: string,
     color?: string,
     tasks?: Task[] 
@@ -63,7 +62,7 @@ const ManageTasks: React.FC<ManageTasksProps> = ({ darkMode }) => {
 
   const handleSelect = (
     card: { name: string; color: string },
-    scheduleName: string
+    scheduleName?: string
   ) => {
     setItems((prev) => {
       if (
@@ -79,7 +78,7 @@ const ManageTasks: React.FC<ManageTasksProps> = ({ darkMode }) => {
         type: 'task',
         name: card.name,
         color: card.color,
-        scheduleName,
+        scheduleName: scheduleName || 'No Schedule',
         position: { x: 0, y: 0 },
       };
       return [...prev, newTask];
@@ -240,7 +239,7 @@ const ManageTasks: React.FC<ManageTasksProps> = ({ darkMode }) => {
     </div>
     {/*mobile view*/}
 <div
-  className="h-screen w-[calc(125%-2.5rem)] relative md:hidden flex flex-col -left-4"
+  className="h-[calc(100vh+4em)] w-screen relative md:hidden flex flex-col"
   style={{
     backgroundColor: darkMode ? '#1f2123' : '#f0f0f0',
     backgroundImage: darkMode
@@ -332,7 +331,7 @@ const ManageTasks: React.FC<ManageTasksProps> = ({ darkMode }) => {
         </div>
 
         <div className="flex flex-wrap w-full gap-4 mt-2">
-          {schedules.map((sc, idx) => (
+          {allTasks?.map((sc, idx) => (
             <div
               key={idx}
               onClick={(e) => {

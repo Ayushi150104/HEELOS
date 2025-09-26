@@ -122,7 +122,7 @@ const TabTable: React.FC<TabTableProp> = ({ darkMode, arr }) => {
             </div>
 
             {/* Subtasks */}
-            {card.subtasks?.length > 0 && (
+            {card.subtasks ? card.subtasks.length > 0 && (
               <div className="mt-4 flex flex-col gap-3 max-h-[12em] overflow-y-auto">
                 {card.subtasks.map((st, sIdx) => (
                   <div
@@ -147,6 +147,8 @@ const TabTable: React.FC<TabTableProp> = ({ darkMode, arr }) => {
                   </div>
                 ))}
               </div>
+            ) : (
+              <p className="text-sm text-gray-500 dark:text-gray-400"> No subtasks available.</p>
             )}
           </div>
         ))}

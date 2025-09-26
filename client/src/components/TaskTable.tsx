@@ -7,41 +7,43 @@ import {
 import NewTaskDetails from "../pages/NewTaskDetails";
 
 type SingleSchedule = {
-  scheduleName: string;
-  scheduleId: string;
+  scheduleName?: string;
+  scheduleId?: string;
   taskId?: string; // Optional, used for specific task details
-  color: string;
-  createdBy: string;
+  color?: string;
+  createdBy?: string;
   tasks: {
-    name: string;
-    color: string;
-    difficulty: string;
-    endBy: string;
-    priority: string;
-    status: string;
-    tags: string[];
-    description: string;
-    createdAt: string;
+    _id?: string;
+    name?: string;
+    color?: string;
+    difficulty?: string;
+    endBy?: string;
+    priority?: string;
+    status?: string;
+    tags?: string[];
+    description?: string;
+    createdAt?: string;
     activityLog: {
-      type: string;
-      time: string;
+      type?: string;
+      time?: string;
     }[];
     subtasks: {
-      name: string;
-      des: string;
-      color: string;
-      date: string;
-      completion: number;
+      name?: string;
+      des?: string;
+      color?: string;
+      date?: string;
+      completion?: number;
     }[];
   }[];
 };
 
 type TaskTableProps = {
-  darkMode: boolean;
-  schedule: SingleSchedule; // only one schedule now
+  darkMode?: boolean;
+  schedule?: SingleSchedule; // only one schedule now
+  taskId?: string; // Optional, used for specific task details
 };
 
-const TaskTable: React.FC<TaskTableProps> = ({ darkMode, schedule }) => {
+const TaskTable: React.FC<TaskTableProps> = ({ darkMode, schedule, taskId }) => {
   const [selectedTaskIdx, setSelectedTaskIdx] = useState<number | null>(null);
 
   const handleRowClick = (taskIdx: number) => {
@@ -54,6 +56,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ darkMode, schedule }) => {
         darkMode ? "bg-zinc-800/80 text-white" : "bg-white text-black"
       }`}
     >
+      <div className="hidden">{taskId}</div>
       <table
         className={`min-w-full border-collapse w-full text-sm ${
           darkMode ? "border-gray-700" : "border-gray-300"
@@ -72,7 +75,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ darkMode, schedule }) => {
         </thead>
 
         <tbody>
-          {schedule.tasks.map((task, taskIdx) => (
+          {schedule?.tasks.map((task, taskIdx) => (
             <React.Fragment key={taskIdx}>
               <tr
                 className={`transition-all border-b text-left cursor-pointer ${
@@ -106,7 +109,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ darkMode, schedule }) => {
                 </td>
                 <td className="py-3 px-4">{task.name}</td>
                 <td className="py-3 px-4">
-                  {new Date(task.endBy).toLocaleDateString("en-IN", {
+                  {new Date(task.endBy ?? "").toLocaleDateString("en-IN", {
                     year: "numeric",
                     month: "short",
                     day: "numeric",
@@ -119,8 +122,9 @@ const TaskTable: React.FC<TaskTableProps> = ({ darkMode, schedule }) => {
                   <td colSpan={3} className="p-4 bg-gray-100 dark:bg-zinc-900">
                     <NewTaskDetails
                       darkMode={darkMode}
+                      status={task.status || "pending"}
                       task={task}
-                      scheduleId={schedule._id}
+                      scheduleId={schedule?.scheduleId}
                       scheduleName={schedule.scheduleName}
                       close={() => setSelectedTaskIdx(null)}
                     />

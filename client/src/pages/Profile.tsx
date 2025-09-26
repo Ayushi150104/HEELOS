@@ -46,7 +46,6 @@ const Profile: React.FC<ProfileProps> = ({ darkMode }) => {
     { label: 'Total Tasks', value: totalTasksCount, Icon: FaList, accent: 'blue' },
     { label: 'Servers', value: 3, Icon: BiServer, accent: 'yellow' },
     { label: 'Desktops', value: 5, Icon: BiDesktop, accent: 'green' },
-    { label: 'Desktops', value: 5, Icon: BiDesktop, accent: 'green' },
   ];
 
   // Last 4 tasks for Urgent Tasks (you can filter by 'urgent' tag if you want)

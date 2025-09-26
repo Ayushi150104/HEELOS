@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import clsx from "clsx";
 import {
   FaBookmark,
   FaBug,
   FaCode,
   FaExclamation,
   FaHourglassStart,
-  FaDotCircle,
-  FaList,
   FaPlus,
 } from "react-icons/fa";
 import { HiClock, HiExclamation } from "react-icons/hi";
@@ -20,47 +17,44 @@ import { HiTrash } from "react-icons/hi2";
 import { toast } from "sonner";
 
 type Subtask = {
-  name: string;
-  des: string;
-  color: string;
-  date: string;
-  completetion: number;
+  name?: string;
+  des?: string;
+  color?: string;
+  date?: string;
+  completetion?: number;
 };
 
 type Activity = {
-  type: string;
-  time: string;
+  type?: string;
+  time?: string;
 };
 
 type Task = {
-  _id: string;
-  name: string;
-  color: string;
-  difficulty: string;
-  endBy: string;
-  priority: string;
-  status: string;
-  tags: string[];
-  description: string;
-  createdAt: string;
-  subtasks: Subtask[];
-  activityLog: Activity[];
+  _id?: string;
+  name?: string;
+  color?: string;
+  difficulty?: string;
+  endBy?: string;
+  priority?: string;
+  status?: string;
+  tags?: string[];
+  description?: string;
+  createdAt?: string;
+  subtasks?: Subtask[];
+  activityLog?: Activity[];
 };
 
 type NewTaskDetailsProps = {
-  darkMode: boolean;
-  scheduleName: string;
-  scheduleId: string;
-  taskId: string;
+  darkMode?: boolean;
+  scheduleName?: string;
+  scheduleId?: string;
+  taskId?: string;
   close: () => void;
   task: Task;
   status: string;
-  setStatus: (status: string) => void;
+  setStatus?: (status: string) => void;
 };
 
-type Status = {
-  status: string
-}
 
 const getPriorityColor = (priority: string) => {
   switch (priority.toLowerCase()) {
@@ -97,9 +91,7 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
   darkMode,
   scheduleName,
   scheduleId,
-  taskId,
   status,
-  setStatus,
   task,
   close,
 }) => {
@@ -296,20 +288,20 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
             <span className="font-semibold text-gray-700 dark:text-gray-300">
               Created:
             </span>{" "}
-            {new Date(localTask.createdAt).toLocaleString()}
+            {new Date(localTask.createdAt ?? "").toLocaleString()}
           </p>
           <p>
             <span className="font-semibold text-gray-700 dark:text-gray-300">
               Due:
             </span>{" "}
-            {new Date(localTask.endBy).toLocaleDateString()}
+            {new Date(localTask.endBy ?? "").toLocaleDateString()}
           </p>
         </div>
 
         {/* Tags */}
-        {localTask.tags?.length > 0 && (
+        {localTask.tags ? localTask.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            {localTask.tags.map((tag, idx) => (
+            {localTask.tags ? localTask.tags.map((tag, idx) => (
               <span
                 key={idx}
                 className={`px-4 py-1 text-sm rounded-md font-medium tracking-wide
@@ -321,8 +313,10 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
               >
                 {tag}
               </span>
-            ))}
+            )) : <p className="text-sm text-gray-500 dark:text-gray-400"> No tags available.</p>}
           </div>
+        ) : ( 
+            <p className="text-sm text-gray-500 dark:text-gray-400"> No tags available.</p>
         )}
 
         {/* Description */}
@@ -342,7 +336,7 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
             label="Priority"
             value={localTask.priority}
             darkMode={darkMode}
-            colorClass={getPriorityColor(localTask.priority)}
+            colorClass={getPriorityColor(localTask.priority ?? "")}
           />
           <div onClick={() => setStatusDropdown((prev) => !prev)}>
             <InfoCard
@@ -384,7 +378,7 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
             <h3 className="text-base font-semibold text-gray-700 dark:text-gray-200 mb-1">
               Subtasks
             </h3>
-            {localTask.subtasks.map((sub, idx) => (
+            {localTask.subtasks ? localTask.subtasks.map((sub, idx) => (
               <div
                 key={idx}
                 className={`rounded-md px-4 py-3 space-y-1 border-none
@@ -401,11 +395,11 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
                   {sub.des}
                 </p>
                 <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                  <span>Due: {new Date(sub.date).toLocaleDateString()}</span>
+                  <span>Due: {new Date(sub.date ?? "").toLocaleDateString()}</span>
                   <span>Completion: {sub.completetion}%</span>
                 </div>
               </div>
-            ))}
+            )) : <p className="text-sm text-gray-500 dark:text-gray-400"> No subtasks available.</p>}
           </div>
         ) : (
           <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -673,7 +667,7 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
                     {entry.type}
                   </div>
                   <div className="text-xs text-gray-500 dark:text-gray-400">
-                    {new Date(entry.time).toLocaleString()}
+                    {new Date(entry.time ?? "").toLocaleString()}
                   </div>
                 </div>
               </div>
@@ -733,18 +727,18 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
               </p>
               <p>
                 <strong>Created:</strong>{" "}
-                {new Date(localTask.createdAt).toLocaleString()}
+                {new Date(localTask.createdAt ? localTask.createdAt : "").toLocaleString()}
               </p>
               <p>
                 <strong>Due:</strong>{" "}
-                {new Date(localTask.endBy).toLocaleDateString()}
+                {new Date(localTask.endBy ? localTask.endBy : "").toLocaleDateString()}
               </p>
             </div>
 
             {/* Tags */}
-            {localTask.tags?.length > 0 && (
+            {localTask.tags ? localTask.tags.length > 0 && (
               <div className="flex flex-wrap gap-2">
-                {localTask.tags.map((tag, idx) => (
+                {localTask.tags ? localTask.tags.map((tag, idx) => (
                   <span
                     key={idx}
                     className={`px-3 py-1 text-xs rounded-md font-medium ${
@@ -755,8 +749,12 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
                   >
                     {tag}
                   </span>
-                ))}
+                )) : <p className="text-sm text-gray-500 dark:text-gray-400"> No tags available.</p>}
               </div>
+            ) : (
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                No tags available.
+              </p>
             )}
 
             {/* Description */}
@@ -774,7 +772,7 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
                 label="Priority"
                 value={localTask.priority}
                 darkMode={darkMode}
-                colorClass={getPriorityColor(localTask.priority)}
+                colorClass={getPriorityColor(localTask.priority ?? "")}
               />
               <InfoCard
                 icon={<HiClock />}
@@ -791,10 +789,10 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
             </div>
 
             {/* Subtasks */}
-            {localTask.subtasks?.length > 0 && (
+            {localTask.subtasks ? localTask.subtasks.length > 0 && (
               <div className="space-y-4">
                 <h3 className="text-sm font-semibold mb-1">Subtasks</h3>
-                {localTask.subtasks.map((sub, idx) => (
+                {localTask.subtasks ? localTask.subtasks.map((sub, idx) => (
                   <div
                     key={idx}
                     className={`rounded-md p-3 space-y-1 ${
@@ -812,12 +810,16 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
                       {sub.des}
                     </p>
                     <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                      <span>Due: {new Date(sub.date).toLocaleDateString()}</span>
+                      <span>Due: {new Date(sub.date ?? "").toLocaleDateString()}</span>
                       <span>Completion: {sub.completetion}%</span>
                     </div>
                   </div>
-                ))}
+                )): <p className="text-sm text-gray-500 dark:text-gray-400"> No subtasks available.</p>}
               </div>
+            ): (
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                No subtasks available.
+              </p>
             )}
 
             {/* Add Subtask Form */}
@@ -1068,7 +1070,7 @@ const NewTaskDetails: React.FC<NewTaskDetailsProps> = ({
                     <div className="ml-4 text-sm">
                       <div className="font-semibold capitalize">{entry.type}</div>
                       <div className="text-xs text-gray-500 dark:text-gray-400">
-                        {new Date(entry.time).toLocaleString()}
+                        {new Date(entry.time ?? "").toLocaleString()}
                       </div>
                     </div>
                   </div>

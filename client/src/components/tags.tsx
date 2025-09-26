@@ -3,10 +3,10 @@ import clsx from 'clsx';
 
 type TagsProps = {
   text: string;
-  darkMode: boolean;
+  darkMode?: boolean;
   selected: boolean; // ✅ Required now
   onClick: (text: string) => void;
-  onClicked: () => void;
+  onClicked?: () => void;
 };
 
 const Tags: React.FC<TagsProps> = ({ text, darkMode, selected, onClick, onClicked }) => {

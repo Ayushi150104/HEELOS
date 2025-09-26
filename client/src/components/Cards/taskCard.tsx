@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 
 type taskCardProp = {
-  imp: string;
+  imp?: string;
   name: string;
   des: string;
   tags: string[];

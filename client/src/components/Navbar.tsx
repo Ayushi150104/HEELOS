@@ -180,7 +180,6 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
                             : "hover:bg-[#bee3f8] hover:text-[#232946] text-[#232946]"
                         }`
                       }
-                      aria-current={({ isActive }) => (isActive ? "page" : undefined)}
                       aria-label={`Navigate to ${name}`}
                     >
                       {name}

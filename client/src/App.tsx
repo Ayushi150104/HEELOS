@@ -39,81 +39,81 @@ function AppContent() {
     localStorage.setItem("darkMode", darkMode.toString());
   }, [darkMode]);
 
-const beforePositionClass = (darkMode: boolean) => {
-  const bgClass = darkMode ? "before:bg-zinc-800" : "before:bg-white";
+// const beforePositionClass = (darkMode: boolean) => {
+//   const bgClass = darkMode ? "before:bg-zinc-800" : "before:bg-white";
 
-  switch (location.pathname) {
-    case "/":
-    case "/about":
-    case "/contact":
-      return `
-        before:content-['']
+//   switch (location.pathname) {
+//     case "/":
+//     case "/about":
+//     case "/contact":
+//       return `
+//         before:content-['']
         
-      `
-    case "/login":
-      return `
-        before:content-[''] 
-        before:absolute 
-        before:inset-0 
-        before:-z-50 
-        before:md:w-screen before:w-[153%] 
-        before:md:h-[105.5%] before:h-[105.5%]
-        before:md:left-[-24em] before:left-0 before:top-0 
-        before:transition-colors before:duration-500
-        ${bgClass}
-      `;
-    case "/Tasks":
-      return `
-        before:content-[''] 
-        before:absolute 
-        before:inset-0 
-        before:-z-50 
-        before:w-[0%]
-        before:md:w-screen 
-        before:md:h-[105.5%] before:h-[15.5%]
-        before:md:left-[-2em] before:left-0 before:top-[-1em]
-        before:transition-colors before:duration-500
-        ${bgClass}
-      `;
-    case "/ManageTasks":
-      return `
-        before:content-[''] 
-        before:absolute 
-        before:inset-0 
-        before:-z-50 
-        before:md:w-screen before:w-[177.9%] 
-        before:md:h-[105.5%] before:h-[104%]
-        before:left-[-15em] before:top-0
-        before:transition-colors before:duration-500
-        ${bgClass}
-      `;
-    case "/Profile":
-      return `
-        before:content-[''] 
-        before:absolute 
-        before:inset-0 
-        before:-z-50 
-        before:md:w-screen before:w-[115.5%]
-        before:md:h-[105.5%] before:h-[105.5%]
-        before:md:left-[-4rem] before:left-[-2rem] before:top-[-2rem]
-        before:transition-colors before:duration-500
-        ${bgClass}
-      `;
+//       `
+//     case "/login":
+//       return `
+//         before:content-[''] 
+//         before:absolute 
+//         before:inset-0 
+//         before:-z-50 
+//         before:md:w-screen before:w-[153%] 
+//         before:md:h-[105.5%] before:h-[105.5%]
+//         before:md:left-[-24em] before:left-0 before:top-0 
+//         before:transition-colors before:duration-500
+//         ${bgClass}
+//       `;
+//     case "/Tasks":
+//       return `
+//         before:content-[''] 
+//         before:absolute 
+//         before:inset-0 
+//         before:-z-50 
+//         before:w-[0%]
+//         before:md:w-screen 
+//         before:md:h-[105.5%] before:h-[15.5%]
+//         before:md:left-[-2em] before:left-0 before:top-[-1em]
+//         before:transition-colors before:duration-500
+//         ${bgClass}
+//       `;
+//     case "/ManageTasks":
+//       return `
+//         before:content-[''] 
+//         before:absolute 
+//         before:inset-0 
+//         before:-z-50 
+//         before:md:w-screen before:w-[177.9%] 
+//         before:md:h-[105.5%] before:h-[104%]
+//         before:left-[-15em] before:top-0
+//         before:transition-colors before:duration-500
+//         ${bgClass}
+//       `;
+//     case "/Profile":
+//       return `
+//         before:content-[''] 
+//         before:absolute 
+//         before:inset-0 
+//         before:-z-50 
+//         before:w-screen
+//         before:h-[105.5%]
+//         before:md:left-[-4rem] ]before:left-[-4rem] before:top-[-2rem]
+//         before:transition-colors before:duration-500
+//         ${bgClass}
+//       `;
     
-    default:
-      return `
-        before:content-[''] 
-        before:absolute 
-        before:inset-0 
-        before:-z-50 
-        before:md:w-screen before:w-[153%] 
-        before:md:h-[105.5%] before:h-[102.5%]
-        before:left-[-15em] before:top-0
-        before:transition-colors before:duration-500
-        ${bgClass}
-      `;
-  }
-};
+//     default:
+//       return `
+//         before:content-[''] 
+//         before:absolute 
+//         before:inset-0 
+//         before:-z-50 
+//         before:w-screen 
+//         before:h-screen 
+//         before:top-0
+//         before:transition-colors before:duration-500
+//         ${bgClass}
+//       `;
+//   }
+// };
 
   return (
     // Wrapper div for background & text colors
@@ -121,9 +121,8 @@ const beforePositionClass = (darkMode: boolean) => {
     <>
     <Toaster position="bottom-right" richColors />
     <div
-  className={`relative min-h-screen transition-colors duration-500 shadow-none
+  className={`relative transition-colors max-w-fit duration-500 shadow-none
     before:content-[''] 
-    ${beforePositionClass(darkMode)}
   ${darkMode ? "before:bg-zinc-800" : "before:bg-white"}`}
 >
 

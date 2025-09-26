@@ -1,4 +1,3 @@
-import React from 'react';
 
 const Contact = () => {
   return (
@@ -24,7 +23,7 @@ const Contact = () => {
           />
           <textarea
             placeholder='Your Message'
-            rows='5'
+            rows={5}
             className='p-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-[#a9d18e] resize-none transition'
             required
           ></textarea>

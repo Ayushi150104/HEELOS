@@ -27,7 +27,6 @@ type DialogProps = {
 const Dialog: React.FC<DialogProps> = ({
   isOpen,
   subTasks,
-  setIsOpen,
   Header,
   Body,
   className,

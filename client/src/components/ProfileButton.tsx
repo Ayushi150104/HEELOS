@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ProfileButtonProps {
-    username: string;
+    username?: string;
     onClick?: () => void;
     avatarUrl?: string;
     classImg?:string
@@ -52,7 +52,7 @@ const ProfileButton: React.FC<ProfileButtonProps> = ({ username, onClick, avatar
                         fontSize: 16,
                     }}
                 >
-                    {username.charAt(0).toUpperCase()}
+                    {username?.charAt(0).toUpperCase()}
                 </div>
             )}
             <span style={{ fontWeight: 500 }}>{username}</span>

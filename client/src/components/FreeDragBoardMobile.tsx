@@ -1,4 +1,4 @@
-import React, { useState, useRef, ReactNode, useEffect } from "react";
+import React, { useState, useRef, type ReactNode, useEffect } from "react";
 import { BsUsbPlugFill } from "react-icons/bs";
 
 type Position = { x: number; y: number };
@@ -19,8 +19,9 @@ type Connector = {
 
 type FreeDragBoardMobileProps<T> = {
   items: DraggableItem<T>[];
+  setItems: React.Dispatch<React.SetStateAction<DraggableItem<T>[]>>; // ✅
   darkMode?: boolean | null;
-  setItems: (items: DraggableItem<T>[]) => void;
+  setConnectors?: React.Dispatch<React.SetStateAction<Connector[]>>; // if needed
   children: (item: DraggableItem<T>) => ReactNode;
   initialConnectors?: Omit<Connector, "color">[];
   className?: string;
@@ -173,7 +174,7 @@ function FreeDragBoardMobile<T>({
 
     clampedPos = snapPosition(clampedPos, snapToGrid);
 
-    setItems((prev) => {
+    setItems((prev: DraggableItem<T>[]) => {
       const updated = [...prev];
       updated[draggingIndex.current!] = {
         ...updated[draggingIndex.current!],
@@ -202,7 +203,6 @@ function FreeDragBoardMobile<T>({
     const onTouchEnd = (e: TouchEvent) => {
       if (!containerRef.current) return;
 
-      const rect = containerRef.current.getBoundingClientRect();
       const touch = e.changedTouches[0];
       const mouseX = touch.clientX;
       const mouseY = touch.clientY;
@@ -311,15 +311,7 @@ function FreeDragBoardMobile<T>({
     setSelectedConnector(null);
   };
 
-  const removeSelectedCard = () => {
-    if (selectedCardKey === null) return;
-    setItems(items.filter(item => item.key !== selectedCardKey));
-    setConnectors(
-      connectors.filter(c => c.fromKey !== selectedCardKey && c.toKey !== selectedCardKey)
-    );
-    setSelectedCardKey(null);
-    if (editingKey === selectedCardKey) setEditingKey(null);
-  };
+
 
   const onCardClick = (key: string | number) => {
     setSelectedCardKey(key);

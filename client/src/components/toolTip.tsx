@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import React from 'react';
 
 type TooltipProps = {
-  darkMode: boolean;
-  text: string;
-  className: string;
-  children: React.ReactNode;
+  darkMode?: boolean;
+  text?: string;
+  className?: string;
+  children?: React.ReactNode;
 };
 
 const Tooltip: React.FC<TooltipProps> = ({ darkMode, text, children, className }) => {

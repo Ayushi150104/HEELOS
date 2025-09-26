@@ -1,4 +1,5 @@
-import React, { useState, useRef, ReactNode, useEffect, KeyboardEvent } from "react";
+import React, { useState, useRef, useEffect, type ReactNode, type KeyboardEvent } from "react";
+
 import { BsUsbPlugFill } from "react-icons/bs";
 
 type Position = { x: number; y: number };
@@ -17,14 +18,15 @@ type Connector = {
 
 type FreeDragBoardProps<T> = {
   items: DraggableItem<T>[];
+  setItems: React.Dispatch<React.SetStateAction<DraggableItem<T>[]>>; // ✅
   darkMode?: boolean | null;
-  setItems: (items: DraggableItem<T>[]) => void;
+  setConnectors?: React.Dispatch<React.SetStateAction<Connector[]>>; // if needed
   children: (item: DraggableItem<T>) => ReactNode;
   initialConnectors?: Omit<Connector, "color">[];
   className?: string;
   width?: number | string;
   height?: number | string;
-  snapToGrid?: number; // grid size in px for snapping
+  snapToGrid?: number;
 };
 
 function getRandomColor() {
@@ -201,7 +203,7 @@ function FreeDragBoard<T>({
 
     clampedPos = snapPosition(clampedPos, snapToGrid);
 
-    setItems((prev) => {
+    setItems((prev: DraggableItem<T>[]) => {
       const updated = [...prev];
       updated[draggingIndex.current!] = {
         ...updated[draggingIndex.current!],
@@ -257,7 +259,6 @@ function FreeDragBoard<T>({
     const onMouseUp = (e: MouseEvent) => {
       if (!containerRef.current) return;
 
-      const rect = containerRef.current.getBoundingClientRect();
       const mouseX = e.clientX;
       const mouseY = e.clientY;
 
@@ -326,7 +327,7 @@ function FreeDragBoard<T>({
       e.preventDefault();
       const delta = e.shiftKey ? 10 : 1;
 
-      setItems((prev) => {
+      setItems((prev: DraggableItem<T>[]) => {
         const updated = prev.map(item => {
           if (item.key !== selectedCardKey) return item;
           let newPos = { ...item.position };
@@ -536,11 +537,12 @@ function FreeDragBoard<T>({
                 value={(item as any).text || ""}
                 onChange={(e) => {
                   const newText = e.target.value;
-                  setItems((prev) =>
-                    prev.map((it) =>
+                  setItems((prev: DraggableItem<T>[]) =>
+                    prev.map((it: DraggableItem<T>) =>
                       it.key === item.key ? { ...it, text: newText } : it
                     )
                   );
+
                 }}
                 onBlur={() => setEditingKey(null)}
                 onKeyDown={(e) => {

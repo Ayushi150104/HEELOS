@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import React from 'react'
-import { BsThreeDotsVertical } from 'react-icons/bs';
-import { HiTable, HiTrash } from 'react-icons/hi';
+import { HiTrash } from 'react-icons/hi';
 import { toast } from 'sonner';
 import api from '../../api/axiosInstance';
 
@@ -13,13 +12,13 @@ type ImpCardsProps = {
   icon: React.ReactNode;
   darkMode: boolean;
   padding?: string | "py-10 px-8 p-4";
-  color: string;
+  color?: string;
   subtasks: {
-    name: string,
-    des: string;
-    color: string;
-    date: string;
-    completion: number;
+    name?: string,
+    des?: string;
+    color?: string;
+    date?: string;
+    completion?: number;
   }[];
   onClick?: () => void;  // Added onClick prop
 }
@@ -83,7 +82,7 @@ const ImpCards: React.FC<ImpCardsProps> = ({
               className="flex items-center justify-center w-8 h-8 rounded-full text-black text-sm bg-white"
               title={task.name}
             >
-              {getInitials(task.name)}
+              {getInitials(task.name || 'N/A')}
             </div>
           ))}
         </div>

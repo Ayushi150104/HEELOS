@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import {
-  FaCalendar,
   FaDotCircle,
   FaList,
   FaPlus,
@@ -138,11 +137,7 @@ const Tasks: React.FC<TasksProp> = ({ darkMode }) => {
   const selectedTask = selectedSchedule?.tasks?.[selectedTaskIdx ?? -1];
 
   // Toggle task tags in form
-  const toggleTaskTag = (tag: string) => {
-    setTaskTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
-  };
+ 
 
   // Reset task form inputs
   const resetTaskForm = () => {
@@ -252,32 +247,6 @@ const Tasks: React.FC<TasksProp> = ({ darkMode }) => {
     }
   };
 
-  // Update task status (pending, completed, overdue)
-  const handleTaskStatusUpdate = (taskId: string, newStatus: string) => {
-    setUserData((prev) => {
-      if (!prev) return prev;
-      const updatedSchedules = prev.schedules.map((sch) => {
-        if (sch._id !== selectedSchedule?._id) return sch;
-        return {
-          ...sch,
-          tasks: sch.tasks.map((task) =>
-            task.id === taskId ? { ...task, status: newStatus } : task
-          ),
-        };
-      });
-      return { ...prev, schedules: updatedSchedules };
-    });
-    setSelectedSchedule((prev) => {
-      if (!prev) return prev;
-      if (prev._id !== selectedSchedule?._id) return prev;
-      return {
-        ...prev,
-        tasks: prev.tasks.map((task) =>
-          task.id === taskId ? { ...task, status: newStatus } : task
-        ),
-      };
-    });
-  };
 
   // Helper: collect all tasks from selected schedule, sorted by status
   const activeTasks = selectedSchedule
@@ -294,6 +263,7 @@ const Tasks: React.FC<TasksProp> = ({ darkMode }) => {
 
   // total/all tasks without filtering
   const allTasks = selectedSchedule ? selectedSchedule.tasks : [];
+  console.log(newScheduleTags)
 
   return (
     <div
