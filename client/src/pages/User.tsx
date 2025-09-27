@@ -85,7 +85,7 @@ const User: React.FC<UserProps> = ({ darkMode }) => {
   const headerBg = darkMode ? "bg-[#1b1b1b] border-gray-700" : "bg-[#f7f7ff] border-gray-300";
 
   return (
-    <div className={`relative z-50 md:top-14 md:w-[128.5%] w-[92%] md:-left-4 left-[74px] min-h-screen ${bgGradient} ${textColor} top-14`}>
+    <div className={`relative z-50 md:top-14 md:w-[128.5%] w-[92%] md:-left-4  min-h-screen ${bgGradient} ${textColor} top-14`}>
       <header className={`flex items-center justify-between px-8 py-6 ${headerBg} border-b shadow`}>
         <div className="flex items-center gap-4">
           <IoCubeOutline className="text-3xl text-blue-400" />
