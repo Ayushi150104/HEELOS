@@ -12,7 +12,8 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 const allowedOrigins = [
-  "https://heelos-mb5j6b0x6-ayushi-choudharys-projects-b1319b45.vercel.app",       // deployed frontend
+  "https://heelos-mb5j6b0x6-ayushi-choudharys-projects-b1319b45.vercel.app", 
+  "https://heelos.vercel.app/",      // deployed frontend
   "http://localhost:3000",      // local frontend
   "http://localhost:3001",      // optional
 ];
