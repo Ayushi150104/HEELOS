@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { BiDesktop, BiServer } from 'react-icons/bi';
+import { BiRefresh } from 'react-icons/bi';
 import { FaList } from 'react-icons/fa';
 import Card from '../components/Cards/Cards';
 import ProfileButton from '../components/ProfileButton';
 import TaskCard from '../components/Cards/taskCard';
 import axiosInstance from '../api/axiosInstance'; // make sure this includes token logic
+import { SiTicktick } from 'react-icons/si';
+import { LuClockAlert } from "react-icons/lu";
 
 interface ProfileProps {
   darkMode: boolean;
@@ -15,6 +17,7 @@ interface Task {
   name: string;
   description?: string;
   endBy?: string;
+  status?: string;
   priority?: string;
   tags?: string[];
   startHour?: number;
@@ -40,12 +43,13 @@ const Profile: React.FC<ProfileProps> = ({ darkMode }) => {
   const allTasks = userData?.schedules?.flatMap(schedule => schedule.tasks || []) ?? [];
 
   const totalTasksCount = allTasks.length;
-
+  
   // Stats cards data
   const stats = [
     { label: 'Total Tasks', value: totalTasksCount, Icon: FaList, accent: 'blue' },
-    { label: 'Servers', value: 3, Icon: BiServer, accent: 'yellow' },
-    { label: 'Desktops', value: 5, Icon: BiDesktop, accent: 'green' },
+    { label: 'Pending', value: allTasks.filter(t => t.status === 'pending').length, Icon: BiRefresh, accent: 'yellow' },
+    { label: 'Completed', value: allTasks.filter(t => t.status === 'completed').length, Icon: SiTicktick, accent: 'green' },
+    { label: 'Overdue', value: allTasks.filter(t => t.status === 'overdue').length, Icon: LuClockAlert, accent: 'red' },
   ];
 
   // Last 4 tasks for Urgent Tasks (you can filter by 'urgent' tag if you want)
@@ -76,7 +80,8 @@ const Profile: React.FC<ProfileProps> = ({ darkMode }) => {
               'rounded-full p-3 transition-colors',
               accent === 'blue' && 'bg-blue-500 text-white hover:bg-blue-600',
               accent === 'yellow' && 'bg-yellow-400 text-black hover:bg-yellow-500',
-              accent === 'green' && 'bg-green-500 text-white hover:bg-green-600'
+              accent === 'green' && 'bg-green-500 text-white hover:bg-green-600',
+              accent === 'red' && 'bg-red-500 text-white hover:bg-red-600',
             )}
             body={String(value)}
             bodyClassName="text-3xl sm:text-4xl font-semibold mt-3 sm:mt-4"

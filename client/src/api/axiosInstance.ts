@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "sonner";
 
 // Base URL for your backend server
-const BASE_URL = "http://localhost:5000/api"; // Update this when deploying
+const BASE_URL = "https://heelos-backend.onrender.com/api"; // Update this when deploying
 
 const api = axios.create({
   baseURL: BASE_URL,
